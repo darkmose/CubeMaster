@@ -928,13 +928,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2247267839007183390, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
     - target: {fileID: 2641455462896558158, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: rotate_speed
-      value: 5
+      propertyPath: move_speed
+      value: 1.28
       objectReference: {fileID: 0}
     - target: {fileID: 3199876356387147560, guid: 9518594beffae124889813211382d301, type: 3}
       propertyPath: m_RootOrder
@@ -983,46 +979,6 @@ PrefabInstance:
     - target: {fileID: 3199876356387147567, guid: 9518594beffae124889813211382d301, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876356951027107, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876356951027107, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_TagString
-      value: Cube_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876356951027117, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_Size.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876356951027117, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_Size.y
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876356951027117, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_Size.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876357523326082, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876357523326082, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_TagString
-      value: Cube_2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876357523326092, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_Size.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876357523326092, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_Size.y
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 3199876357523326092, guid: 9518594beffae124889813211382d301, type: 3}
-      propertyPath: m_Size.z
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9518594beffae124889813211382d301, type: 3}

@@ -6,16 +6,19 @@ public class MoveCUBE : MonoBehaviour
 {
     private bool motion_flag;  //Метка движения: 1- Куб движется, 0- Куб стоит на месте. Для блокировки движений во все стороны.
     public float rotate_speed = 5; //Скорость вращения куба.
+    public float move_speed = 5; //Скорость вращения куба.
 
     private GameObject Cube1;           //Два составляющих куба 
     private GameObject Cube2;
 
 
-    private Quaternion Move_setp;
+    private Quaternion Rotate_setp;
+    private Vector3 Move_setp;
 
     private void Awake()
     {
-        Move_setp = new Quaternion();
+        Rotate_setp = new Quaternion();
+        Move_setp = new Vector3();
     }
 
     private void Start()
@@ -53,9 +56,13 @@ public class MoveCUBE : MonoBehaviour
     {
         if (!motion_flag)
         {
+            Rotate_setp = Quaternion.AngleAxis(90, Vector3Int.back) * transform.rotation;            
+            Move_setp = (!isVertical()) ? transform.position + Vector3Int.right : transform.position + new Vector3(1.5f, 0, 0); // В лежачем положении двигаем на 1 ячейку, в вертикальном на 1.5.
+            
+
             motion_flag = true;
             StartCoroutine(MotionControl());
-        }
+        }        
     }
     /// <summary>
     /// Движение влево
@@ -64,10 +71,14 @@ public class MoveCUBE : MonoBehaviour
     {
         if (!motion_flag)
         {
+            Rotate_setp = Quaternion.AngleAxis(90, Vector3Int.forward) * transform.rotation;
+            Move_setp = (!isVertical()) ? transform.position + Vector3Int.left : transform.position + new Vector3(-1.5f, 0, 0);
+
             motion_flag = true;
             StartCoroutine(MotionControl());
-        }
+        }      
     }
+
     /// <summary>
     /// Движение назад
     /// </summary>
@@ -75,19 +86,13 @@ public class MoveCUBE : MonoBehaviour
     {
         if (!motion_flag)
         {
-            if (isVertical())
-            {
-                Move_setp = Quaternion.AngleAxis(transform.rotation.x - 90.0f, Vector3.right);
-            }
-            else
-            {
-                Move_setp = Quaternion.AngleAxis(transform.rotation.x - 90.0f, Vector3.right);
-            }
+            Rotate_setp = Quaternion.AngleAxis(90, Vector3Int.left) * transform.rotation;
+            Move_setp = (!isVertical()) ? transform.position + Vector3Int.back : transform.position + new Vector3(0, 0, -1.5f);
 
             motion_flag = true;
             StartCoroutine(MotionControl());
         }
-    }
+    }                       
     /// <summary>
     /// Движение вперед
     /// </summary>
@@ -95,14 +100,8 @@ public class MoveCUBE : MonoBehaviour
     {
         if (!motion_flag)
         {
-            if (isVertical())
-            {
-                Move_setp = Quaternion.AngleAxis(transform.rotation.x + 90.0f, Vector3.right);
-            }
-            else
-            {
-                Move_setp = Quaternion.AngleAxis(transform.rotation.x + 90.0f, Vector3.right);
-            }
+            Rotate_setp = Quaternion.AngleAxis(90, Vector3Int.right) * transform.rotation;
+            Move_setp = (!isVertical()) ? transform.position + Vector3Int.forward : transform.position + new Vector3(0, 0, 1.5f);
 
             motion_flag = true;
             StartCoroutine(MotionControl());
@@ -117,10 +116,11 @@ public class MoveCUBE : MonoBehaviour
     {
         while (true)
         {
-            Quaternion q_result = Quaternion.RotateTowards(transform.rotation, Move_setp, Time.deltaTime * 50 * rotate_speed);       //Quaternion.RotateTowards(transform.rotation, Move_setp, Time.deltaTime * 50 * rotate_speed);
-            transform.rotation = q_result;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Rotate_setp, Time.deltaTime * 50 * rotate_speed);
+            transform.position = Vector3.MoveTowards(transform.position, Move_setp, Time.deltaTime * move_speed);
+                   
 
-            if (transform.rotation.eulerAngles == Move_setp.eulerAngles) //Заданный угол поворота равен текущему
+            if (transform.rotation.eulerAngles == Rotate_setp.eulerAngles  &&  transform.position == Move_setp ) //Заданный угол поворота равен текущему
             {
                 motion_flag = false;
                 break;
@@ -139,25 +139,29 @@ public class MoveCUBE : MonoBehaviour
     {
         RaycastHit hitinfo = new RaycastHit();
 
-        if (Physics.Raycast(new Ray(Cube1.transform.position, Cube1.transform.position + Vector3.up), out hitinfo, 1f))
+        if (Physics.Raycast(new Ray(Cube1.transform.position, Vector3.up), out hitinfo, 1f))
         {
+            Debug.Log(hitinfo.collider.name);
+
+            if (Cube2.CompareTag(hitinfo.collider.tag))
+            {
+            Debug.Log("Vertical");
+                return true;
+            }
+        }
+
+
+        if (Physics.Raycast(new Ray(Cube1.transform.position, Vector3.down), out hitinfo, 1f))
+        {
+            Debug.Log(hitinfo.collider.name);
 
             if (Cube2.CompareTag(hitinfo.collider.tag))
             {
                 return true;
             }
-
         }
 
-        if (Physics.Raycast(new Ray(Cube1.transform.position, Cube1.transform.position + Vector3.down), out hitinfo, 1f))
-        {
-
-            if (Cube2.CompareTag(hitinfo.collider.tag))
-            {
-                return true;
-            }
-
-        }
+        Debug.Log("Horizontal");
 
         return false;
     }
